@@ -2,10 +2,15 @@ import axios from 'axios';
 import React, { useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Token} from '../TokenConfig/Token';
+import Aux from '../hoc/Aux';
+import Modal from 'react-modal';
+import Link from 'next/link';
 
+Modal.setAppElement("#__next");
 
 const DisplayProducts = ({data}) => {
     console.log(data)
+
     const [Productdata, setData] = useState([]);
 
     useEffect(() => {
@@ -47,10 +52,18 @@ const DisplayProducts = ({data}) => {
               }
             }
           }
+
+        
       }
 
 
     return(
+        <Aux>
+
+         <Modal isOpen={false}>
+         <div>In the modal</div>
+         </Modal>
+
         <div className="product-list">
         { Productdata.map((product) => {
             if(typeof(product.masterData.current.masterVariant.images[0]) === 'undefined'){
@@ -58,7 +71,8 @@ const DisplayProducts = ({data}) => {
             }
 
             return(
-                <div key={product.id} col-sm-4="true" className="product">
+                <Link href={`/Product/[Product]?Product=${product.masterData.current.name.en}`} as={`/Product/${product.masterData.current.name.en}`}><a>
+                <div key={product.id} col-sm-4="true" className="product" >
                 <div className="p-2 m-3" style={{width: "300px", backgroundcolor: "#87cefa", outline: "5px solid #87cefa"}}>
                 <div className="row">
                 <div className="col-sm-12"> {product.masterData.current.name.en} </div> 
@@ -70,9 +84,12 @@ const DisplayProducts = ({data}) => {
                   </div>
                 </div>
                 </div>
+                </a>
+                </Link>
             )
          }) }
         </div>
+        </Aux>
     )
 }
 

@@ -4,7 +4,7 @@ import DisplayProducts from '../Components/DisplayProducts';
 import {Token} from '../TokenConfig/Token';
 
 
-export default function Home({data}) {
+export default function index({data}) {
   return (
     <div className="container">
     <div className="row">
@@ -14,7 +14,7 @@ export default function Home({data}) {
   )
 }
 
-export const getServerSideProps = async ({query}) => {
+export async function getServerSideProps ({query}) {
   const page = query.page || 1
   
   // Fetch data from external API
