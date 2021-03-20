@@ -7,9 +7,7 @@ import {Token} from '../TokenConfig/Token';
 export default function index({data}) {
   return (
     <div className="container">
-    <div className="row">
-          <DisplayProducts data={data} />
-          </div>
+          <DisplayProducts data={data} />        
     </div>
   )
 }

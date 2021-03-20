@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 const getProductDetails = (Productid) => 
 fetch(`https://api.commercetools.co/nuts-custom-demo-1/products/${Productid}`,Token)
-.then((response)=> response.data.json());
+.then((response)=> response.json());
 
 export default function product({Productid}){
     //swr take two parameters key and a fetchercher functions
@@ -11,11 +11,26 @@ export default function product({Productid}){
 
     if(error) return <div>No Product</div>;
     if(!data) return <div>Loading...</div>
-     console.log(Productid)
+    if(typeof(data.masterData.current.masterVariant.images[0]) === 'undefined'){
+        return "https://1b0bbb9e89b4713adcc7-aea4cee2cb18344b328e3a03eff3ec4f.ssl.cf1.rackcdn.com/ece4edb2868a8225.cro-U2aFaCJE-thumb.jpg";
+    }
+    // else if (typeof(data.masterData.current.masterVariant.prices[0] === 'undefined')){
+    //     return {"N/a"}
+    // }
+     console.log(data)
     return(
-        <div>
-        <h1>We are here</h1>
+        <div key={data.id}>
+        <div className="card" style={{width: "18rem"}}>
+        <img className="card-img-top" src={data.masterData.current.masterVariant.images[0].url} 
+                                  alt={data.masterData.current.name.en} />
+        <div className="card-body">
+          <h3 className="card-title">{data.masterData.current.name.en}</h3>
+          <p className="card-text">{data.masterData.current.description.en}</p>
+          <br/>
+          <a href="#" className="btn btn-primary">Go somewhere</a>
         </div>
+      </div>
+      </div>
     )
 
 }
