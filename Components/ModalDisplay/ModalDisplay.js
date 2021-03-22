@@ -1,55 +1,47 @@
-import {Token} from '../../TokenConfig/Token';
+import { Token } from '../../TokenConfig/Token';
 import useSWR from 'swr';
+import { CheckThumbnailImage, CheckFullImage, CheckPrice, CheckProductInfo } from '../CheckApiData/CheckApiData'
 
-const getProductDetails = (Productid) => 
-fetch(`https://api.commercetools.co/nuts-custom-demo-1/products/${Productid}`,Token)
-.then((response)=> response.json());
 
-export default function product({Productid}){
-    //swr take two parameters key and a fetchercher functions
-    const {data, error} = useSWR(Productid, getProductDetails);
+const getProductDetails = (Productid) =>
+    fetch(`https://api.commercetools.co/nuts-custom-demo-1/products/${Productid}`, Token)
+        .then((response) => response.json());
 
-    if(error) return <div>No Product</div>;
-    if(!data) return <div>Loading...</div>
-    if(typeof(data.masterData.current.masterVariant.images[0]) === 'undefined'){
-        return "https://1b0bbb9e89b4713adcc7-aea4cee2cb18344b328e3a03eff3ec4f.ssl.cf1.rackcdn.com/ece4edb2868a8225.cro-U2aFaCJE-thumb.jpg";
-    }
-    // else if (typeof(data.masterData.current.masterVariant.prices[0] === 'undefined')){
-    //     return {"N/a"}
-    // }
-     console.log(data)
-    return(
+export default function product({ Productid }) {
+    //swr take two parameters key and a fetcher functions
+    const { data, error } = useSWR(Productid, getProductDetails);
+
+    if (error) return <div>No Product</div>;
+    if (!data) return <div>Loading...</div>
+
+    console.log(data)
+    return (
         <div key={data.id}>
-        <div className="card" style={{width: "18rem"}}>
-        <img className="card-img-top" src={data.masterData.current.masterVariant.images[0].url} 
-                                  alt={data.masterData.current.name.en} />
-        <div className="card-body">
-          <h3 className="card-title">{data.masterData.current.name.en}</h3>
-          <p className="card-text">{data.masterData.current.description.en}</p>
-          <br/>
-          <a href="#" className="btn btn-primary">Go somewhere</a>
+
+            <div className="" >
+                <img className="rounded float-right"
+                    src={"https://1b0bbb9e89b4713adcc7-aea4cee2cb18344b328e3a03eff3ec4f.ssl.cf1.rackcdn.com/5e85d71501308335-L2AE6hCf-thumb.jpg"}
+                    alt="Organic badge" />
+                <div className="row no-gutters">
+                    <div className="col-xs-12 col-md-6">
+                        <img className="" src={CheckThumbnailImage(data.masterData.current.masterVariant.images[0])}
+                            alt={data.masterData.current.name.en}
+                            style={{ width: "250px", height: "200px" }} /></div>
+                    <div className="col-xs-12 col-md-6">
+                        <img className="" src={CheckFullImage(data.masterData.current.masterVariant.images[1])}
+                            alt={data.masterData.current.name.en}
+                            style={{ width: "400px", height: "200px" }} />
+                    </div>
+                </div>
+
+                <div className="card-body">
+                    <h3 className="card-title">{CheckProductInfo(data.masterData.current.name)}</h3>
+                    <p className="card-text">{CheckProductInfo(data.masterData.current.description)}</p>
+                    <br />
+                    <h5>${CheckPrice(data.masterData.current.masterVariant.prices[0])}</h5>
+                    <a href="#" className="btn btn-primary">Add To Cart</a>
+                </div>
+            </div>
         </div>
-      </div>
-      </div>
     )
-
 }
-
-// if(this.state.selectedProduct){
-//     if(typeof(this.state.selectedProduct.masterData.current.masterVariant.images[0]) === 'undefined'){
-//         return "https://1b0bbb9e89b4713adcc7-aea4cee2cb18344b328e3a03eff3ec4f.ssl.cf1.rackcdn.com/ece4edb2868a8225.cro-U2aFaCJE-thumb.jpg";
-//     }
-//     if(typeof(this.state.selectedProduct.masterData.current.masterVariant.prices[0].centAmount)=== 'undefined'){
-//         return "Not Avaliable";
-//     }
-//   Summary = (
-//         <div>
-//         <h1>{this.state.selectedProduct.masterData.current.name.en}</h1>
-//             <img src={this.state.selectedProduct.masterData.current.masterVariant.images[0].url} 
-//                  alt={this.state.selectedProduct.masterData.current.name.en} />
-//   <p>{this.state.selectedProduct.masterData.current.description.en}</p>
-//   <h2>{this.state.selectedProduct.masterData.current.masterVariant.prices[0].centAmount}</h2>
-//   <button onClick={this.props.clicked}>Close</button>
-//         </div>
-
-//axios.get(`https://api.commercetools.co/nuts-custom-demo-1/products/${this.props.id}`,Token)

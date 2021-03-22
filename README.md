@@ -1,3 +1,6 @@
+Before you can use the application you need a token. The token goes in the Token Config folder. Inside the JS file named Token
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
